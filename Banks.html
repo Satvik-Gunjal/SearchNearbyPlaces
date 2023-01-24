@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <link rel="stylesheet" href="styles.css">
+    <script>
+        
+        getLocation();
+  
+  function getLocation() {
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(showPosition);
+    } else {
+      x.innerHTML = "Geolocation is not supported by this browser.";
+    }
+  }
+  
+  function showPosition(position) {  
+      var lat = position.coords.latitude;
+      var lng = position.coords.longitude;
+             
+          fetch('https://discover.search.hereapi.com/v1/discover?at='+lat+','+lng+'&q=Bank&apiKey=ZkSRkdsYelr1HdQ1rIALcMkJEaNy5Yk1bR_UX4i82tg')
+
+            .then((response) => { return response.json(); })
+            .then((response) => {
+                console.log(response);
+                let tabledata = "";
+                response.items.map((element) => {
+                    tabledata += `<tr>
+                <td>${element.title}</td>       
+                <td>${element.address.label}</td>              
+              
+              </tr>`
+                });
+                document.getElementById("table_body").innerHTML = tabledata;
+            }) 
+        }            
+    </script>
+</head>
+<body>
+    <h2> Banks Near by you </h2>
+
+    <ul id="satvik"></ul>
+    <table>
+        <thead>
+            <tr>
+                <th>Name</th>
+                
+                <th>Address</th>
+                
+            </tr>
+        </thead>
+        <tbody id="table_body"></tbody>
+    </table>
+</body>
+</html>
